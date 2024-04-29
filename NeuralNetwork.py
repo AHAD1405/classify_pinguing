@@ -94,11 +94,9 @@ class Neural_Network:
         for i in range(self.num_outputs):
             # TODO! Calculate the weighted sum, and then compute the final output.
             weighted_sum = np.dot(hidden_layer_outputs, self.output_layer_weights[:][:,i])
-            output = self.sigmoid(weighted_sum)
-            temp_output.append(output)
-
+            temp_output.append(weighted_sum)
         soft_output = self.softmax(np.array(temp_output))
-        output_layer_outputs.append(soft_output)
+        #output_layer_outputs.append(soft_output)
 
         return hidden_layer_outputs, output_layer_outputs[0][0]
         
@@ -188,6 +186,7 @@ class Neural_Network:
         for instance in instances:
             hidden_layer_outputs, output_layer_outputs = self.forward_pass(instance)
             #print(output_layer_outputs)
+            # Convert the probabilities to a binary target class
             predicted_class = np.argmax(output_layer_outputs)  # TODO! Should be 0, 1, or 2.
             predictions.append(predicted_class)
         return predictions
