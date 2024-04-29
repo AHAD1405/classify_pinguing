@@ -161,6 +161,7 @@ class Neural_Network:
         for epoch in range(epochs):
             print('epoch = ', epoch)
             predictions = []
+            correct_predictions = 0
             #for i, instance in enumerate(instances):
             for idx in range(len(instances)):
                 instance = instances[idx]
@@ -170,6 +171,10 @@ class Neural_Network:
                 predicted_class = np.argmax(output_layer_outputs[0])  # TODO!
                 predictions.append(predicted_class)
 
+                # Compare prediction with actual 
+                if predicted_class == np.argmax(desired_outputs[idx]):
+                    correct_predictions += 1  # Increment correct predictions if prediction is correct
+
                 # We use online learning, i.e. update the weights after every instance.
                 self.update_weights(delta_output_layer_weights, delta_hidden_layer_weights)
 
@@ -178,7 +183,7 @@ class Neural_Network:
             print('Output layer weights  \n', self.output_layer_weights)
 
             # TODO: Print accuracy achieved over this epoch
-            acc = None
+            acc = correct_predictions / len(instances)
             print('acc = ', acc)
 
     def predict(self, instances):
