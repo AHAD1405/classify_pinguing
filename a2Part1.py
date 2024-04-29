@@ -32,20 +32,22 @@ if __name__ == '__main__':
     instances = scaler.fit_transform(instances)
     # We can't use strings as labels directly in the network, so need to do some transformations
     label_encoder, integer_encoded, onehot_encoder, onehot_encoded = encode_labels(labels)
-    # labels = onehot_encoded
+    
+    labels = onehot_encoded
+    
 
     # Parameters. As per the handout.
     n_in = 4
     n_hidden = 2
     n_out = 3
-    learning_rate = 0.2
+    learning_rate = 0.5
 
     initial_hidden_layer_weights = np.array([[-0.28, -0.22], [0.08, 0.20], [-0.30, 0.32], [0.10, 0.01]])
     initial_output_layer_weights = np.array([[-0.29, 0.03, 0.21], [0.08, 0.13, -0.36]])
 
     nn = Neural_Network(n_in, n_hidden, n_out, initial_hidden_layer_weights, initial_output_layer_weights,
                         learning_rate)
-
+    
     print('First instance has label {}, which is {} as an integer, and {} as a list of outputs.\n'.format(
         labels[0], integer_encoded[0], onehot_encoded[0]))
 
@@ -67,7 +69,8 @@ if __name__ == '__main__':
     print('Output layer weights:\n', nn.output_layer_weights)
 
     # TODO: Train for 100 epochs, on all instances.
-    nn.train(instances, onehot_encoded, 20)
+    nn.train(instances, onehot_encoded, 2)
+
     print('\nAfter training:')
     print('Hidden layer weights:\n', nn.hidden_layer_weights)
     print('Output layer weights:\n', nn.output_layer_weights)
