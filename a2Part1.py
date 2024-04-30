@@ -29,7 +29,6 @@ def accuracy(predictions, actual_onehot_encoded, instance_length):
     test_accuracy = test_correct_predictions / instance_length
     return test_accuracy
 
-
 if __name__ == '__main__':
     data = pd.read_csv('penguins307-train.csv')
     # the class label is last!
@@ -41,9 +40,7 @@ if __name__ == '__main__':
     instances = scaler.fit_transform(instances)
     # We can't use strings as labels directly in the network, so need to do some transformations
     label_encoder, integer_encoded, onehot_encoder, onehot_encoded = encode_labels(labels)
-    
-    labels = onehot_encoded
-    
+    # labels = onehot_encoded
 
     # Parameters. As per the handout.
     n_in = 4
@@ -56,7 +53,7 @@ if __name__ == '__main__':
 
     nn = Neural_Network(n_in, n_hidden, n_out, initial_hidden_layer_weights, initial_output_layer_weights,
                         learning_rate)
-    
+
     print('First instance has label {}, which is {} as an integer, and {} as a list of outputs.\n'.format(
         labels[0], integer_encoded[0], onehot_encoded[0]))
 
@@ -78,11 +75,11 @@ if __name__ == '__main__':
     print('Output layer weights:\n', nn.output_layer_weights)
 
     # TODO: Train for 100 epochs, on all instances.
-    nn.train(instances, onehot_encoded, 1)
-
+    nn.train(instances, onehot_encoded, 5)
     print('\nAfter training:')
     print('Hidden layer weights:\n', nn.hidden_layer_weights)
     print('Output layer weights:\n', nn.output_layer_weights)
+
 
     pd_data_ts = pd.read_csv('penguins307-test.csv')
     test_labels = pd_data_ts.iloc[:, -1]
@@ -91,10 +88,11 @@ if __name__ == '__main__':
     test_instances = scaler.transform(test_instances)
 
     # TODO: Compute and print the test accuracy
+    # Perform prediction on test data 
     tes_label_encoder, test_integer_encoded, test_onehot_encoder, test_onehot_encoded = encode_labels(test_labels)
-    test_predict = nn.predict(test_instances)
+    predictions = nn.predict(test_instances)
     
     # Calculate the accuracy
-    test_predict_class = onehot_encoder.transform(np.array(test_predict).reshape(-1, 1))  # convert interget predicted into one hot code class
-    test_accuracy = accuracy(test_predict_class, test_onehot_encoded , len(test_instances))
-    print("The Accuracy is: {:.2f} %".format(test_accuracy*100))
+    predictions_class = onehot_encoder.transform(np.array(predictions).reshape(-1, 1))  # convert interget predicted into one hot code class
+    acc_test = accuracy(predictions_class, test_onehot_encoded , len(test_instances))
+    print("The Accuracy on test data is: {:.2f} %".format(acc_test*100))
