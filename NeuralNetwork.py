@@ -153,8 +153,8 @@ class Neural_Network:
         # Update the weights and bias 
         self.hidden_layer_weights += hidden_weights_update
         self.output_layer_weights += output_weights_update
-
-        print('Placeholder')
+        #print(f'Output weights are: {self.output_layer_weights}')
+        #print(f'Hidden Layer weights are: {self.hidden_layer_weights}')
 
     def train(self, instances, desired_outputs, epochs):
 
@@ -184,7 +184,8 @@ class Neural_Network:
 
             # TODO: Print accuracy achieved over this epoch
             acc = correct_predictions / len(instances)
-            print('acc = ', acc)
+            print("acc = {:.2f} %".format(acc*100))
+            
 
     def predict(self, instances):
         predictions = []
