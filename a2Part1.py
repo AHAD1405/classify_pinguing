@@ -49,7 +49,7 @@ if __name__ == '__main__':
     n_in = 4
     n_hidden = 2
     n_out = 3
-    learning_rate = 0.2
+    learning_rate = 0.8
 
     initial_hidden_layer_weights = np.array([[-0.28, -0.22], [0.08, 0.20], [-0.30, 0.32], [0.10, 0.01]])
     initial_output_layer_weights = np.array([[-0.29, 0.03, 0.21], [0.08, 0.13, -0.36]])
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     print('Output layer weights:\n', nn.output_layer_weights)
 
     # TODO: Train for 100 epochs, on all instances.
-    nn.train(instances, onehot_encoded, 100)
+    nn.train(instances, onehot_encoded, 3)
 
     print('\nAfter training:')
     print('Hidden layer weights:\n', nn.hidden_layer_weights)
