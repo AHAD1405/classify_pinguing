@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.utils import resample
 
 from NeuralNetwork import Neural_Network
 
@@ -32,6 +33,7 @@ def calculate_acc(predictions, actual_onehot_encoded, instance_length):
 
 if __name__ == '__main__':
     data = pd.read_csv('penguins307-train.csv')
+    
     # the class label is last!
     labels = data.iloc[:, -1]
     # seperate the data from the labels
@@ -44,12 +46,11 @@ if __name__ == '__main__':
     
     labels = onehot_encoded
     
-
     # Parameters. As per the handout.
     n_in = 4
     n_hidden = 2
     n_out = 3
-    learning_rate = 0.8
+    learning_rate = 0.2  # 0.8 show best performance 
 
     initial_hidden_layer_weights = np.array([[-0.28, -0.22], [0.08, 0.20], [-0.30, 0.32], [0.10, 0.01]])
     initial_output_layer_weights = np.array([[-0.29, 0.03, 0.21], [0.08, 0.13, -0.36]])
@@ -80,13 +81,14 @@ if __name__ == '__main__':
     print('Output layer weights:\n', nn.output_layer_weights)
 
     # TODO: Train for 100 epochs, on all instances.
-    nn.train(instances, onehot_encoded, 3)
+    nn.train(instances, onehot_encoded, 100)
 
     print('\nAfter training:')
     print('Hidden layer weights:\n', nn.hidden_layer_weights)
     print('Output layer weights:\n', nn.output_layer_weights)
 
     pd_data_ts = pd.read_csv('penguins307-test.csv')
+
     test_labels = pd_data_ts.iloc[:, -1]
     test_instances = pd_data_ts.iloc[:, :-1]
     #scale the test according to our training data.
@@ -99,4 +101,4 @@ if __name__ == '__main__':
     # Calculate the accuracy
     test_predict_class = onehot_encoder.transform(np.array(test_predict).reshape(-1, 1))  # convert interget predicted into one hot code class
     test_accuracy = calculate_acc(test_predict_class, test_onehot_encoded , len(test_instances))
-    print("The Accuracy is: {:.2f} %".format(test_accuracy*100))
+    print("The Accuracy test data is: {:.2f} %".format(test_accuracy*100))
